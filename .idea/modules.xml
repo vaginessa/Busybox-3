@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Busybox.iml" filepath="$PROJECT_DIR$/Busybox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Busybox.iml" filepath="$PROJECT_DIR$/Busybox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/busybox/busybox.iml" filepath="$PROJECT_DIR$/busybox/busybox.iml" />
       <module fileurl="file://$PROJECT_DIR$/busybox/busybox.iml" filepath="$PROJECT_DIR$/busybox/busybox.iml" />
     </modules>
   </component>

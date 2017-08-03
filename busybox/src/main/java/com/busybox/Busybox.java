@@ -1,6 +1,9 @@
 package com.busybox;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 
 import org.apache.commons.io.IOUtils;
 
@@ -17,6 +20,7 @@ public class Busybox {
     public static final Worker SU=new Worker("su");
     public static final Worker SH=new Worker("sh");
     private static String path;
+    private static int activitiesCount;
 
     /**
      * Executes shell commands
@@ -57,7 +61,7 @@ public class Busybox {
      * @param context app context
      * @throws IOException if initialization failed
      */
-    public static void init(Context context) throws IOException{
+    public static void init(Application context) throws IOException{
         File file=new File(context.getFilesDir(),"busybox");
         if(!file.exists()){
             InputStream inputStream=context.getAssets().open("busybox");
@@ -69,6 +73,23 @@ public class Busybox {
         if(!file.canExecute()&&!file.setExecutable(true))
             throw new IOException(String.format("Can't set executable %s",file.getAbsolutePath()));
         path=file.getAbsolutePath().replaceAll("\\s","\\ ");
+        context.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override public void onActivityStarted(Activity activity) {}
+            @Override public void onActivityResumed(Activity activity) {}
+            @Override public void onActivityPaused(Activity activity) {}
+            @Override public void onActivityStopped(Activity activity) {}
+            @Override public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {}
+
+            @Override
+            public void onActivityCreated(Activity activity, Bundle bundle) {
+                activitiesCount++;
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+                if(--activitiesCount<=0)reset();
+            }
+        });
     }
 
     public static class Worker{
